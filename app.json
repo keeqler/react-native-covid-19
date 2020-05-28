@@ -1,0 +1,17 @@
+{
+  "name": "ReactNativeCovid19",
+  "displayName": "ReactNativeCovid19",
+  "expo": {
+    "name": "ReactNativeCovid19",
+    "slug": "ReactNativeCovid19",
+    "version": "1.0.0",
+    "platforms": [
+      "ios",
+      "android",
+      "web"
+    ],
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
