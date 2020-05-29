@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import NumberFormat from 'react-number-format';
 
 import { Picker } from '@react-native-community/picker';
 
@@ -14,7 +15,6 @@ import {
   Upper,
   ConfirmedCases,
   Location,
-  Rank,
   Lower,
   CasesContainer,
   Cases,
@@ -27,11 +27,13 @@ import {
 
 export default function App() {
   const [countryOptions, setCountryOptions] = useState([]);
-  const [selectedCountryIndex, setSelectedCountryIndex] = useState(0);
+  const [casesData, setCasesData] = useState({});
+  const [selectedCountryIndex, setSelectedCountryIndex] = useState(null);
 
-  const selectedCountryName = selectedCountryIndex
-    ? countryOptions[selectedCountryIndex].name
-    : null;
+  const selectedCountry =
+    selectedCountryIndex && countryOptions[selectedCountryIndex].name;
+  const selectedCountryCode =
+    (selectedCountryIndex && countryOptions[selectedCountryIndex].code) || '';
 
   async function fetchCountryData() {
     const countryData = (await api.get('countries')).data.countries;
@@ -42,36 +44,60 @@ export default function App() {
     ]);
   }
 
-  // async function fetchConfirmedCases() {}
+  async function fetchNumberOfCases() {
+    const requestRoute =
+      (selectedCountryCode && `countries/${selectedCountryCode}`) || '';
+    const { confirmed, recovered, deaths } = (await api.get(requestRoute)).data;
 
-  // async function fetchRecoveredCases() {}
-
-  // async function fetchFatalCases() {}
+    setCasesData({
+      confirmed: confirmed.value,
+      recovered: recovered.value,
+      deaths: deaths.value,
+    });
+  }
 
   useEffect(() => {
     fetchCountryData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    fetchNumberOfCases();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedCountryIndex]);
+
+  // eslint-disable-next-line react/prop-types
+  const FormattedNumber = ({ value, wrapper: Wrapper, style }) => (
+    <NumberFormat
+      value={value}
+      displayType="text"
+      thousandSeparator
+      renderText={formatted => <Wrapper style={style}>{formatted}</Wrapper>}
+    />
+  );
+
   return (
     <Container>
       <Upper>
-        <ConfirmedCases>123,123</ConfirmedCases>
-        <Location>
-          Confirmed cases in {selectedCountryName || 'the world'}
-        </Location>
-        {selectedCountryIndex ? <Rank>Global rank: 2</Rank> : null}
+        <FormattedNumber value={casesData.confirmed} wrapper={ConfirmedCases} />
+        <Location>Confirmed cases in {selectedCountry || 'the world'}</Location>
       </Upper>
       <Lower>
         <CasesContainer>
           <Cases>
-            <CasesNumber style={{ color: recoveredTextColor }}>
-              60,512
-            </CasesNumber>
+            <FormattedNumber
+              value={casesData.recovered}
+              wrapper={CasesNumber}
+              style={{ color: recoveredTextColor }}
+            />
             <CasesName>Recovered</CasesName>
           </Cases>
           <Cases>
-            <CasesNumber style={{ color: deathsTextColor }}>10,124</CasesNumber>
+            <FormattedNumber
+              value={casesData.deaths}
+              wrapper={CasesNumber}
+              style={{ color: deathsTextColor }}
+            />
             <CasesName>Deaths</CasesName>
           </Cases>
         </CasesContainer>
@@ -81,9 +107,7 @@ export default function App() {
             <Picker
               style={{ width: '100%', maxWidth: 300, height: 40 }}
               mode="dropdown"
-              onValueChange={value => {
-                setSelectedCountryIndex(value);
-              }}
+              onValueChange={value => setSelectedCountryIndex(value)}
               selectedValue={selectedCountryIndex}
             >
               {countryOptions.map(({ name }, index) => (

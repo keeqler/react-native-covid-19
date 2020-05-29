@@ -1,6 +1,12 @@
 import styled from 'styled-components/native';
 
-import { confirmedText, confirmedBackground, text, background } from '~/colors';
+import {
+  confirmedText,
+  confirmedBackground,
+  button,
+  text,
+  background,
+} from '~/colors';
 
 export const Container = styled.View`
   width: 100%;
@@ -31,12 +37,6 @@ export const Location = styled.Text`
   color: ${text};
 `;
 
-export const Rank = styled.Text`
-  font-size: 14px;
-  font-weight: 400;
-  color: ${text};
-`;
-
 export const Lower = styled.View`
   width: 100%;
   flex: 1;
@@ -48,7 +48,7 @@ export const Lower = styled.View`
 `;
 
 export const CasesContainer = styled.View`
-  width: 240px;
+  width: 260px;
   margin-top: 10px;
   flex-direction: row;
   justify-content: space-between;
