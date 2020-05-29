@@ -64,12 +64,6 @@ export const CasesName = styled.Text`
   color: ${text};
 `;
 
-export const PickerContainer = styled.View`
-  width: 100%;
-  flex-direction: column;
-  align-items: center;
-`;
-
 export const PickerWrapper = styled.View`
   width: 100%;
   flex-direction: column;
