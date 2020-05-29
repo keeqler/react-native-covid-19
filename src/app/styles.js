@@ -1,12 +1,6 @@
 import styled from 'styled-components/native';
 
-import {
-  confirmedText,
-  confirmedBackground,
-  button,
-  text,
-  background,
-} from '~/colors';
+import { confirmedText, confirmedBackground, text, background } from '~/colors';
 
 export const Container = styled.View`
   width: 100%;
