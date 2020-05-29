@@ -82,21 +82,12 @@ export default function App() {
   }
 
   useEffect(() => {
-    (async () => {
-      await fetchCountryData();
-      await fetchNumberOfCases();
-
-      setLoading(false);
-    })();
+    fetchCountryData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    if (loading) return;
-
     (async () => {
-      setLoading(true);
-
       await fetchNumberOfCases(selectedCountryCode);
 
       setLoading(false);
@@ -118,7 +109,10 @@ export default function App() {
     <Container>
       <Upper>
         <FormattedNumber value={casesData.confirmed} wrapper={ConfirmedCases} />
-        <Location>Confirmed cases in {selectedCountry || 'the world'}</Location>
+        <Location>
+          Confirmed cases in{' '}
+          {(!selectedCountryIndex && 'the world') || selectedCountry}
+        </Location>
       </Upper>
       <Lower>
         <CasesContainer>
