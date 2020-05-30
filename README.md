@@ -2,7 +2,7 @@
 <h1 align="center">React Native COVID-19</h1>
 <p align="center">A mobile application for monitoring COVID-19 data from all countries.</p>
 
-# 📸 Screenshots
+# 📸 Preview
 
 <p align="center">
   <img src="https://github.com/keeqler/react-native-covid-19/blob/master/.github/preview.gif?raw=true">
